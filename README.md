@@ -7,6 +7,10 @@
 - Python >= v3.6
 - ffmpeg
 
+### CURRENT VERSION
+-----
+- v1.1
+
 ### SUPPORTED FEATURES
 -----
 - [x] Download your favourite 720p YoutTube videos from your playlists in .mp4 codec
