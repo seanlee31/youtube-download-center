@@ -2,6 +2,9 @@
 
 ## A Python-based YouTube Video &amp; Audio Downloader.
 
+### REQUIREMENTS
+- Python >= v3.6
+- ffmpeg
 
 ### SUPPORTED FUNCTIONALITIES
 - [x] Download your favourite 720p YoutTube videos from your playlists in .mp4 codec
