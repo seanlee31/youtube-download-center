@@ -27,7 +27,7 @@
 
 ### Beta Screenshots
 -----
-![YouTube Download Center Beta v1.0](https://imgur.com/bxqQGxq.png) 
+![YouTube Download Center v1.1](https://i.imgur.com/4Z9Q0PW.png) 
 
 ### BUG Report
 -----
