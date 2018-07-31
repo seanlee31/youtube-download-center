@@ -17,7 +17,9 @@
 -----
 - [ ] Download your favourite 320kbps YoutTube audios from your playlists in .mp3 codec
 - [ ] Complete CLI support.
+- [ ] Complete CLI document.
 - [ ] Complete user-friendly GUI to allow normal users to access easily.
+- [ ] Complete user-friendly GUI document.
 - [ ] Allow user to choose how many threads will be used for downloading.
 - [ ] Download your favourite 1080p YoutTube videos from your playlists in .mp4 codec (supported by ffmpeg) in Windows platforms.
 - [ ] Download your favourite 1080p YoutTube videos from your playlists in .mp4 codec (supported by ffmpeg) in Mac platforms.
@@ -29,7 +31,7 @@
 
 ### BUG Report
 -----
-Please repots bugs at [Issues](https://github.com/seanlee31/youtube-dc/issues "Issues"). Thank you!
+Please report bugs at [Issues](https://github.com/seanlee31/youtube-dc/issues "Issues"). Thank you!
 
 ### Contributor(s)
 -----
