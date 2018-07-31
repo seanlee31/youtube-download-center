@@ -76,7 +76,12 @@ class videoDownloaderThread(ytDownloaderThread):
                 print("[Main - {} - {}/{}] YouTube Video {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!\n".format(self.name, self._count, self._init_quantity, yt_url, video.resolution, diff_time))
                 self._count += 1
             except exceptions.RegexMatchError:
-                print("[Error - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
+                print("[Error (RegexMatchError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
+                self._count += 1
+                continue
+            except OSError as err:
+                sys.stderr.write(err)
+                print("[Error (OSError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
                 continue
 
