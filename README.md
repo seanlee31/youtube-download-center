@@ -29,7 +29,7 @@
 - [ ] Download your favourite 1080p YoutTube videos from your playlists in .mp4 codec (supported by ffmpeg) in Mac platforms.
 - [ ] Coming soon ...
 
-### Beta Screenshots
+### Screenshots
 -----
 ![YouTube Download Center v1.1](https://i.imgur.com/4Z9Q0PW.png) 
 
