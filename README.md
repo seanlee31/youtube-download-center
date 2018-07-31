@@ -17,6 +17,9 @@
 ### TO-DO
 - [ ] Coming soon ...
 
+-----
 Author: Sean L.
+
+Contact: 
 
 License: GNU General Public License v3.0
