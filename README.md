@@ -21,8 +21,7 @@
 - [ ] Coming soon ...
 
 ### Beta Screenshots
-![YouTube Download Center Beta v1.0](https://imgur.com/a/aPwMsuO "YouTube Download Center Beta v1.0")
-
+![YouTube Download Center Beta v1.0](https://imgur.com/bxqQGxq.png") 
 
 ### BUG Report
 Please repots bugs at [Issues](https://github.com/seanlee31/youtube-dc/issues "Issues"). Thank you!
