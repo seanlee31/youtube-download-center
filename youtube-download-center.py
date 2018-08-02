@@ -210,7 +210,6 @@ def button_monitor():
 def main():
     ## Disable buttons
     download_button['state'] = 'disabled'
-    exit_button['state'] = 'disabled'
 
     p_url_and_path = r"(.*):(https?:.*)"
     pl_entries = text_pl_urls.get("1.0", 'end-1c')  ## 'end-1c' to remove 1 character, \n.
