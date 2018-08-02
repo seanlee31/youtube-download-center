@@ -8,9 +8,9 @@
 
 ### OS PLATFORM EXECUTABLES
 -----
-- [x] [Windows OS Availabe!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1/youtube-download-center-latest-win.exe) 
-- [x] [Mac OS Available!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1/youtube-download-center-latest-mac)
-- [x] [Linux OS Available!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1/youtube-download-center-latest-linux)
+- [x] [Windows OS Availabe!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-win.exe) 
+- [x] [Mac OS Available!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-mac)
+- [x] [Linux OS Available!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-linux)
 
 ### LANGUAGE & LIBRARIES
 -----
