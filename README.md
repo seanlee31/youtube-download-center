@@ -2,14 +2,20 @@
 
 ## A Python-based YouTube Video &amp; Audio Downloader
 
-### REQUIREMENTS
------
-- Python >= v3.6
-- ffmpeg
-
 ### CURRENT VERSION
 -----
 - v1.1
+
+### OS PLATFORM EXECUTABLES
+-----
+- [x] Windows OS Available!
+- [x] Mac OS Available!
+- [x] Linux OS Available!
+
+### Language & Libraries
+-----
+- Python >= v3.6
+- ffmpeg
 
 ### SUPPORTED FEATURES
 -----
