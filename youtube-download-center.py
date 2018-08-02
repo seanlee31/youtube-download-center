@@ -156,6 +156,8 @@ def get_yt_urls_and_paths(pl_urls_and_paths):
     return yt_urls, pl_paths
 
 def list_chunkify(lst, n):
+    if n == 1:
+        return lst
     for i in range(0, len(lst), n):
         yield lst[i:i+n]
 
@@ -167,12 +169,12 @@ def download_from_mapping_multithreaded(yt_urls, pl_paths, mode, num_threads=5, 
 
     mappings_by_threads = list(list_chunkify(mappings, num_videos_per_thread))
 
-    if num_videos_remainder > 0:
+    if num_threads > 1 and num_videos_remainder > 0:
         remainder_idx = num_threads
         mappings_by_threads[remainder_idx-1].extend(mappings_by_threads[remainder_idx])
 
-    ## Remove the remainder mappings that were added to the last complete mappings set.
-    mappings_by_threads = mappings_by_threads[:-1]
+        ## Remove the remainder mappings that were added to the last complete mappings set.
+        mappings_by_threads = mappings_by_threads[:-1]
 
     # yt_downloaders = list()
     ## Start videoDownloaderThread workers.
@@ -192,6 +194,18 @@ def download_from_mapping_multithreaded(yt_urls, pl_paths, mode, num_threads=5, 
 
     # for yt_downloader in yt_downloaders:
     #     yt_downloader.join()
+
+def button_monitor():
+    while True:
+        if threading.activeCount() >= 2:
+            ## Disable buttons
+            download_button['state'] = 'disabled'
+            exit_button['state'] = 'disabled'
+            time.sleep(5)
+        else:           
+            ## Enable buttons
+            download_button['state'] = 'normal'
+            exit_button['state'] = 'normal'
 
 def main():
     ## Disable buttons
@@ -219,14 +233,11 @@ def main():
     pl_mappings = list(zip(pl_lst, path_lst))
     yt_urls, pl_paths = get_yt_urls_and_paths(pl_mappings)
 
-    if mode == "AUDIO":
-        download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
-    if mode == "VIDEO":
-        download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
+    download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
 
-    ## Enable buttons
-    download_button['state'] = 'normal'
-    exit_button['state'] = 'normal'
+    # buttonMonitorThread = threading.Thread(target=button_monitor, name="buttonMonitor")
+    # buttonMonitorThread.daemon = True
+    # buttonMonitorThread.run()
 
 if __name__ == '__main__':  ## python youtube-downloader.py [mode] [num_threads] ([storage_directory] [youtube playlists]) ...
     root = Tk()
