@@ -12,7 +12,7 @@
 - [x] [Mac OS Available!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1/youtube-download-center-latest-mac)
 - [x] [Linux OS Available!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1/youtube-download-center-latest-linux)
 
-### Language & Libraries
+### LANGUAGE & LIBRARIES
 -----
 - Python >= v3.6
 - ffmpeg
