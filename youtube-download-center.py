@@ -190,6 +190,10 @@ def download_from_mapping_multithreaded(yt_urls, pl_paths, mode, num_threads=5, 
         # yt_downloader.join()    ## Commented out to avoid waiting for current thread to finish processing (Used for debugging)
 
 def main():
+    ## Grey out Buttons
+    download_button['state'] = 'disabled'
+    exit_button['state'] = 'disabled'
+
     p_url_and_path = r"(.*):(https?:.*)"
     pl_entries = text_pl_urls.get("1.0", 'end-1c')  ## 'end-1c' to remove 1 character, \n.
     pl_entries = pl_entries.splitlines()
@@ -216,6 +220,9 @@ def main():
     if mode == "VIDEO":
         download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
 
+    ## Resume Buttons
+    download_button['state'] = 'disabled'
+    exit_button['state'] = 'disabled'
 
 if __name__ == '__main__':  ## python youtube-downloader.py [mode] [num_threads] ([storage_directory] [youtube playlists]) ...
     root = Tk()
@@ -245,8 +252,8 @@ if __name__ == '__main__':  ## python youtube-downloader.py [mode] [num_threads]
     label_warning.grid(row=5, column=0, columnspan=2)
     label_warning_2.grid(row=6, column=0, columnspan=2)
 
-    button = Button(root, text="Start Download", command=main, width=50)
-    button.grid(row=7, column=0, columnspan=2)
+    download_button = Button(root, text="Start Download", command=main, width=50)
+    download_button.grid(row=7, column=0, columnspan=2)
 
     ## Define Exit Button
     exit_button = Button(root, text="Exit", width=50, command=root.destroy)
