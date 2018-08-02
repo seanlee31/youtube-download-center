@@ -240,7 +240,7 @@ def main():
 
 if __name__ == '__main__':  ## python youtube-downloader.py [mode] [num_threads] ([storage_directory] [youtube playlists]) ...
     root = Tk()
-    root.title("YouTube Download Center v1.1 - By Sean L.")
+    root.title("YouTube Download Center v1.1.1 - By Sean L.")
     label_pl_urls = Label(root, text='Input YouTube PlayLists Urls: ')
     label_pl_urls.grid(row=0, column=0, columnspan=2)
 
