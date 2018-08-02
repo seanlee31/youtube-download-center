@@ -36,7 +36,7 @@ class ytDownloaderThread(threading.Thread):
         percent = 100.
         while percent <= 100.:
             if percent % 10. == 0.:
-                print('[Downloading - {} - {}/{}] {:.2f}%\n'.format(self.name, self.count, self.init_num_videos, percent))
+                print('[Downloading - {} - {}/{}] {:.2f}%\n'.format(self.name, self._count, self._init_quantity, percent))
             percent = self.percent(bytes_remaining, total_size)
 
     def percent(self, bytes_remaining, total_size):
@@ -171,10 +171,10 @@ def download_from_mapping_multithreaded(yt_urls, pl_paths, mode, num_threads=5, 
         remainder_idx = num_threads
         mappings_by_threads[remainder_idx-1].extend(mappings_by_threads[remainder_idx])
 
-
     ## Remove the remainder mappings that were added to the last complete mappings set.
     mappings_by_threads = mappings_by_threads[:-1]
 
+    # yt_downloaders = list()
     ## Start videoDownloaderThread workers.
     for mappings in mappings_by_threads:
         mappings = deque(mappings)
@@ -185,12 +185,16 @@ def download_from_mapping_multithreaded(yt_urls, pl_paths, mode, num_threads=5, 
         if mode == "VIDEO":
             yt_downloader = videoDownloaderThread(yt_video_queue=mappings, init_num_videos=num_mappings, show_progress=show_progress)
 
+        yt_downloader.daemon = True
         yt_downloader.start()
+        # yt_downloaders.append(yt_downloader)
         time.sleep(1)
-        # yt_downloader.join()    ## Commented out to avoid waiting for current thread to finish processing (Used for debugging)
+
+    # for yt_downloader in yt_downloaders:
+    #     yt_downloader.join()
 
 def main():
-    ## Grey out Buttons
+    ## Disable buttons
     download_button['state'] = 'disabled'
     exit_button['state'] = 'disabled'
 
@@ -215,11 +219,14 @@ def main():
     pl_mappings = list(zip(pl_lst, path_lst))
     yt_urls, pl_paths = get_yt_urls_and_paths(pl_mappings)
 
-    download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
+    if mode == "AUDIO":
+        download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
+    if mode == "VIDEO":
+        download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
 
-    ## Resume Buttons
-    download_button['state'] = 'disabled'
-    exit_button['state'] = 'disabled'
+    ## Enable buttons
+    download_button['state'] = 'normal'
+    exit_button['state'] = 'normal'
 
 if __name__ == '__main__':  ## python youtube-downloader.py [mode] [num_threads] ([storage_directory] [youtube playlists]) ...
     root = Tk()
