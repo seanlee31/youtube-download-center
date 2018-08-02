@@ -215,10 +215,7 @@ def main():
     pl_mappings = list(zip(pl_lst, path_lst))
     yt_urls, pl_paths = get_yt_urls_and_paths(pl_mappings)
 
-    if mode == "AUDIO":
-        download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
-    if mode == "VIDEO":
-        download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
+    download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
 
     ## Resume Buttons
     download_button['state'] = 'disabled'
