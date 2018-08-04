@@ -1,3 +1,6 @@
+########################################
+###            LIBRARIES             ###
+########################################
 from pytube import Playlist, YouTube, exceptions
 import sys
 import threading
@@ -14,19 +17,21 @@ from tkinter.scrolledtext import ScrolledText
 import re
 
 ########################################
-### Producer/Consumer Design Pattern ###
+###              CODES               ###
 ########################################
-
 V_MP4_1080P = 137
 A_MP4_128KB = 140
 A_OPUS_160KB = 251
 
 VA_MP4_720P = 22
 
-class ytDownloaderThread(threading.Thread):
-    def __init__(self, yt_queue, init_quantity, show_progress=False):
+########################################
+### Producer/Consumer Design Pattern ###
+########################################
+class genericDownloaderThread(threading.Thread):
+    def __init__(self, va_queue, init_quantity, show_progress=False):
         super().__init__()
-        self._yt_queue = yt_queue
+        self._va_queue = va_queue
         self._init_quantity = init_quantity
         self._show_progress = show_progress
         self._count = 1
@@ -47,80 +52,79 @@ class ytDownloaderThread(threading.Thread):
         if not os.path.exists(path):
             os.makedirs(path)
             print("[Main - {}] The Missing Folder/Directory, {}, Has Been Created!\n".format(self.name, path))
-
-class videoDownloaderThread(ytDownloaderThread):
+    
+class videoDownloaderThread(genericDownloaderThread):
     ## Consumer
     def __init__(self, yt_video_queue, init_num_videos, show_progress=False):
         super().__init__(yt_video_queue, init_num_videos, show_progress)
 
     def run(self):
-        while len(self._yt_queue) > 0:
-            yt_video = self._yt_queue.popleft()
+        while len(self._va_queue) > 0:
+            yt_video = self._va_queue.popleft()
             yt_url = yt_video[0]
             pl_path = yt_video[1]
             self.check_path(pl_path)
             try:
                 if self._show_progress:
-                    yt = YouTube(yt_url, on_progress_callback=super.progress_function)
+                    yt = YouTube(yt_url, on_progress_callback=self.progress_function)
                 else:
                     yt = YouTube(yt_url)
-                # video = yt.streams.filter(subtype='mp4').all()
-                # video = yt.streams.get_by_itag(V_MP4_1080P)
-                # audio = yt.streams.get_by_itag(A_MP4_128KB)
+
                 video = yt.streams.get_by_itag(VA_MP4_720P)
+                
                 start_time = time.time()
-                print("[Main - {} - {}/{}] YouTube Video {} w/ {} Download Has Started ...\n".format(self.name, self._count, self._init_quantity, yt_url, video.resolution))
+                print("[Main - {} - {}/{}] YouTube Video {} w/ {} Download Has Started ...".format(self.name, self._count, self._init_quantity, yt.title, video.resolution))
+                print("[Main - {} - {}/{}] URL: {} \n".format(self.name, self._count, self._init_quantity, yt_url))
                 video.download(pl_path)
                 end_time = time.time()
                 diff_time = end_time - start_time
-                print("[Main - {} - {}/{}] YouTube Video {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!\n".format(self.name, self._count, self._init_quantity, yt_url, video.resolution, diff_time))
+                print("[Main - {} - {}/{}] YouTube Video {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!\n".format(self.name, self._count, self._init_quantity, yt.title, video.resolution, diff_time))
                 self._count += 1
             except exceptions.RegexMatchError:
                 print("[Error (RegexMatchError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
                 continue
-            except OSError as err:
-                sys.stderr.write(err)
+            except OSError:
                 print("[Error (OSError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
                 continue
 
-        print("[Main - {}] The Thread Has Finished Downloading All YouTube Videos {}!\nExiting Thread ... \n".format(self.name, yt_url))
+        print("[Main - {}] The Thread Has Finished Downloading All YouTube Videos Assigned!\nExiting Thread ... \n".format(self.name))
 
-class audioDownloaderThread(ytDownloaderThread):
+class audioDownloaderThread(genericDownloaderThread):
     ## Consumer
     def __init__(self, yt_audio_queue, init_num_audios, show_progress=False):
         super().__init__(yt_audio_queue, init_num_audios, show_progress)
 
     def run(self):
-        while len(self._yt_queue) > 0:
-            yt_audio = self._yt_queue.popleft()
+        while len(self._va_queue) > 0:
+            yt_audio = self._va_queue.popleft()
             yt_url = yt_audio[0]
             pl_path = yt_audio[1]
             self.check_path(pl_path)
             try:
                 if self._show_progress:
-                    yt = YouTube(yt_url, on_progress_callback=super.progress_function)
+                    yt = YouTube(yt_url, on_progress_callback=self.progress_function)
                 else:
                     yt = YouTube(yt_url)
-                # audio = yt.streams.get_by_itag(A_MP4_128KB)
+
                 audio = yt.streams.get_by_itag(A_OPUS_160KB)
  
                 start_time = time.time()
-                print("[Main - {} - {}/{}] YouTube Audio {} w/ {} Download Has Started ...\n".format(self.name, self._count, self._init_quantity, yt_url, audio.abr))
+                print("[Main - {} - {}/{}] YouTube Audio {} w/ {} Download Has Started ...".format(self.name, self._count, self._init_quantity, yt.title, audio.abr))
+                print("[Main - {} - {}/{}] URL: {} \n".format(self.name, self._count, self._init_quantity, yt_url))
                 audio.download(pl_path)
                 end_time = time.time()
                 diff_time = end_time - start_time
-                print("[Main - {} - {}/{}] YouTube Audio {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!\n".format(self.name, self._count, self._init_quantity, yt_url, audio.abr, diff_time))
+                print("[Main - {} - {}/{}] YouTube Audio {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!\n".format(self.name, self._count, self._init_quantity, yt.title, audio.abr, diff_time))
                 self._count += 1
             except exceptions.RegexMatchError:
                 print("[Error - {} - {}/{}] YouTube Audio {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
                 continue
 
-        print("[Main - {}] The Thread Has Finished Downloading All YouTube Videos {}!\nExiting Thread ... \n".format(self.name, yt_url))
+        print("[Main - {}] The Thread Has Finished Downloading All YouTube Videos Assigned!\nExiting Thread ... \n".format(self.name))
 
-            
 def download_playlist_1080p(pl_url, pl_path, threads=5):
     # print("[Main] Started Downloading YouTube Playlist {}! \n".format(url))
     pl = Playlist(pl_url)
@@ -156,39 +160,48 @@ def get_yt_urls_and_paths(pl_urls_and_paths):
     return yt_urls, pl_paths
 
 def list_chunkify(lst, n):
-    if n == 1:
-        return lst
     for i in range(0, len(lst), n):
         yield lst[i:i+n]
 
-def download_from_mapping_multithreaded(yt_urls, pl_paths, mode, num_threads=5, show_progress=False):
-    mappings = list(zip(yt_urls, pl_paths))
+def download_from_mapping_multithreaded(urls, paths, mode, num_threads=5, show_progress=False):
+    mappings = list(zip(urls, paths))
     num_mappings = len(mappings)
+ 
     num_videos_per_thread = num_mappings // num_threads
     num_videos_remainder = num_mappings % num_threads
 
+    if num_mappings < num_threads:
+        num_videos_per_thread = 1
+
     mappings_by_threads = list(list_chunkify(mappings, num_videos_per_thread))
 
-    if num_threads > 1 and num_videos_remainder > 0:
-        remainder_idx = num_threads
-        mappings_by_threads[remainder_idx-1].extend(mappings_by_threads[remainder_idx])
+    if num_videos_per_thread >= 1 and num_videos_remainder > 0:
+        last_valid_idx = num_threads - 1
+        num_mappings_per_thread = len(mappings_by_threads)
+        diff = num_mappings_per_thread - num_threads
 
-        ## Remove the remainder mappings that were added to the last complete mappings set.
-        mappings_by_threads = mappings_by_threads[:-1]
+        while diff > 0:
+            cur_last_idx = last_valid_idx + diff 
+            mappings_by_threads[cur_last_idx - 1].extend(mappings_by_threads[cur_last_idx])
 
+            ## Remove the remainder mappings that were added to the last complete mappings set.
+            mappings_by_threads = mappings_by_threads[:-1]
+            num_mappings_per_thread = len(mappings_by_threads)
+            diff = num_mappings_per_thread - num_threads
+    
     # yt_downloaders = list()
-    ## Start videoDownloaderThread workers.
+    ## Start DownloaderThread workers.
     for mappings in mappings_by_threads:
         mappings = deque(mappings)
         num_mappings = len(mappings)
 
         if mode == "AUDIO":
-            yt_downloader = audioDownloaderThread(yt_audio_queue=mappings, init_num_audios=num_mappings, show_progress=show_progress)
+            downloader = audioDownloaderThread(yt_audio_queue=mappings, init_num_audios=num_mappings, show_progress=show_progress)
         if mode == "VIDEO":
-            yt_downloader = videoDownloaderThread(yt_video_queue=mappings, init_num_videos=num_mappings, show_progress=show_progress)
+            downloader = videoDownloaderThread(yt_video_queue=mappings, init_num_videos=num_mappings, show_progress=show_progress)
 
-        yt_downloader.daemon = True
-        yt_downloader.start()
+        downloader.daemon = True
+        downloader.start()
         # yt_downloaders.append(yt_downloader)
         time.sleep(1)
 
@@ -232,15 +245,16 @@ def main():
     pl_mappings = list(zip(pl_lst, path_lst))
     yt_urls, pl_paths = get_yt_urls_and_paths(pl_mappings)
 
-    download_from_mapping_multithreaded(yt_urls=yt_urls, pl_paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
-
+    download_from_mapping_multithreaded(urls=yt_urls, paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False)
+    
     # buttonMonitorThread = threading.Thread(target=button_monitor, name="buttonMonitor")
     # buttonMonitorThread.daemon = True
     # buttonMonitorThread.run()
+    # print("[Main] All Threads Had Successfully Finished Downloading Quests! \n")
 
-if __name__ == '__main__':  ## python youtube-downloader.py [mode] [num_threads] ([storage_directory] [youtube playlists]) ...
+if __name__ == '__main__':
     root = Tk()
-    root.title("YouTube Download Center v1.1.1 - By Sean L.")
+    root.title("YouTube Download Center v1.1.2  By Sean L.")
     label_pl_urls = Label(root, text='Input YouTube PlayLists Urls: ')
     label_pl_urls.grid(row=0, column=0, columnspan=2)
 
@@ -251,7 +265,7 @@ if __name__ == '__main__':  ## python youtube-downloader.py [mode] [num_threads]
     label_mode.grid(row=2, column=0)
     mode_options = ("AUDIO", "VIDEO")
     cbox_mode = ttk.Combobox(root, values=mode_options, width=40)
-    cbox_mode.current(0)
+    cbox_mode.current(1)
     cbox_mode.grid(row=2, column=1)
 
     label_num_threads = Label(root, text='Input # of Thread Using: ')
