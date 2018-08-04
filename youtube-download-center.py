@@ -78,7 +78,8 @@ class videoDownloaderThread(genericDownloaderThread):
                 video.download(pl_path)
                 end_time = time.time()
                 diff_time = end_time - start_time
-                print("[Main - {} - {}/{}] YouTube Video {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!\n".format(self.name, self._count, self._init_quantity, yt.title, video.resolution, diff_time))
+                print("[Main - {} - {}/{}] YouTube Video {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!".format(self.name, self._count, self._init_quantity, yt.title, video.resolution, diff_time))
+                print("[Main - {} - {}/{}] URL: {} \n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
             except exceptions.RegexMatchError:
                 print("[Error (RegexMatchError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
@@ -116,7 +117,8 @@ class audioDownloaderThread(genericDownloaderThread):
                 audio.download(pl_path)
                 end_time = time.time()
                 diff_time = end_time - start_time
-                print("[Main - {} - {}/{}] YouTube Audio {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!\n".format(self.name, self._count, self._init_quantity, yt.title, audio.abr, diff_time))
+                print("[Main - {} - {}/{}] YouTube Audio {} w/ {} Was Successfully Downloaded -- Took {:.2f}s!".format(self.name, self._count, self._init_quantity, yt.title, audio.abr, diff_time))
+                print("[Main - {} - {}/{}] URL: {} \n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
             except exceptions.RegexMatchError:
                 print("[Error - {} - {}/{}] YouTube Audio {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
