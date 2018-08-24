@@ -4,13 +4,13 @@
 
 ### CURRENT VERSION
 -----
-- v1.1.1
+- v1.2.0
 
 ### OS PLATFORM EXECUTABLES
 -----
-- [x] [Windows OS Availabe!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-win.exe) 
-- [x] [Mac OS Available!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-mac)
-- [x] [Linux OS Available!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-linux)
+- [x] [Windows Executable Availabe - Click To Download!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-win.exe) 
+- [x] [macOS Executable Available - Click To Download!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-mac)
+- [x] [Linux Executable Available - Click To Download!](https://github.com/seanlee31/youtube-download-center/releases/download/v1.1.1/youtube-download-center-latest-linux)
 
 ### LANGUAGE & LIBRARIES
 -----
@@ -19,7 +19,10 @@
 
 ### SUPPORTED FEATURES
 -----
-- [x] Download your favourite 720p YoutTube videos from your playlists in .mp4 codec
+- [x] Download your favourite 1080P YoutTube videos from your playlists in .mkv codec (supported by ffmpeg) in Windows platforms.
+- [x] Download your favourite 1080P YoutTube videos from your playlists in .mkv codec (supported by ffmpeg) in macOS platforms.
+- [x] Download your favourite 1080P YoutTube videos from your playlists in .mkv codec (supported by ffmpeg) in Linux platforms.
+- [x] Download your favourite 720P YoutTube videos from your playlists in .mp4 codec
 - [x] Download your favourite 320kbps YoutTube audios from your playlists in .webm (opus) codec
 - [x] Support multithreaded direct downloads to greatly decrease download time.
 - [x] Complete user-friendly GUI to allow normal users to access easily.
@@ -31,8 +34,6 @@
 - [ ] Complete CLI support.
 - [ ] Complete CLI document.
 - [ ] Complete user-friendly GUI document.
-- [ ] Download your favourite 1080p YoutTube videos from your playlists in .mp4 codec (supported by ffmpeg) in Windows platforms.
-- [ ] Download your favourite 1080p YoutTube videos from your playlists in .mp4 codec (supported by ffmpeg) in Mac platforms.
 - [ ] Coming soon ...
 
 ### Screenshots
