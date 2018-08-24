@@ -24,8 +24,8 @@
 - [x] Download your favourite 160kbps YouTube audios from your playlists in .webm (opus) codec on **Windows/macOS/Linux platforms**.
 - [x] Support **multithreaded direct downloads** to greatly decrease download time.
 - [x] Allow user to choose how many threads will be used for downloading.
-- [x] **User-friendly GUI** to allow regular users to access and interact without hassle.
-- [x] **No need to install extra dependencies -- All necessary libraries are included already!**
+- [x] **User-friendly GUI** to allow regular users to access and interact without hassles.
+- [x] **No need to install extra dependencies! ~ All necessary libraries are included already! ~ Nice and Easy!**
 
 ### TO-DO
 -----
