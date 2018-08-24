@@ -19,13 +19,13 @@
 
 ### SUPPORTED FEATURES
 -----
-- [x] Download your favourite 1080P YouTube videos from your playlists in .mkv codec (supported by ffmpeg) on Windows/macOS/Linux platforms.
-- [x] Download your favourite 720P YouTube videos from your playlists in .mp4 codec on Windows/macOS/Linux platforms.
-- [x] Download your favourite 160kbps YouTube audios from your playlists in .webm (opus) codec on Windows/macOS/Linux platforms.
-- [x] Support multithreaded direct downloads to greatly decrease download time.
-- [x] Complete user-friendly GUI to allow normal users to access easily.
+- [x] Download your favourite 1080P YouTube videos from your playlists in .mkv codec (supported by ffmpeg) on **Windows/macOS/Linux platforms**.
+- [x] Download your favourite 720P YouTube videos from your playlists in .mp4 codec on **Windows/macOS/Linux platforms**.
+- [x] Download your favourite 160kbps YouTube audios from your playlists in .webm (opus) codec on **Windows/macOS/Linux platforms**.
+- [x] Support **multithreaded direct downloads** to greatly decrease download time.
 - [x] Allow user to choose how many threads will be used for downloading.
-- [x] No need to install extra dependencies -- All necessary libraries are included already!
+- [x] **User-friendly GUI** to allow regular users to access and interact without hassle.
+- [x] **No need to install extra dependencies -- All necessary libraries are included already!**
 
 ### TO-DO
 -----
