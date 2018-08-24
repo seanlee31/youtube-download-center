@@ -25,6 +25,7 @@
 - [x] Support multithreaded direct downloads to greatly decrease download time.
 - [x] Complete user-friendly GUI to allow normal users to access easily.
 - [x] Allow user to choose how many threads will be used for downloading.
+- [x] No need to install extra dependencies -- All necessary libraries are included already!
 
 ### TO-DO
 -----
