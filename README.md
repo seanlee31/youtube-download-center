@@ -19,18 +19,16 @@
 
 ### SUPPORTED FEATURES
 -----
-- [x] Download your favourite 1080P YoutTube videos from your playlists in .mkv codec (supported by ffmpeg) in Windows platforms.
-- [x] Download your favourite 1080P YoutTube videos from your playlists in .mkv codec (supported by ffmpeg) in macOS platforms.
-- [x] Download your favourite 1080P YoutTube videos from your playlists in .mkv codec (supported by ffmpeg) in Linux platforms.
-- [x] Download your favourite 720P YoutTube videos from your playlists in .mp4 codec
-- [x] Download your favourite 320kbps YoutTube audios from your playlists in .webm (opus) codec
+- [x] Download your favourite 1080P YoutTube videos from your playlists in .mkv codec (supported by ffmpeg) on Windows/macOS/Linux platforms.
+- [x] Download your favourite 720P YoutTube videos from your playlists in .mp4 codec on Windows/macOS/Linux platforms.
+- [x] Download your favourite 320kbps YoutTube audios from your playlists in .webm (opus) codec on Windows/macOS/Linux platforms.
 - [x] Support multithreaded direct downloads to greatly decrease download time.
 - [x] Complete user-friendly GUI to allow normal users to access easily.
 - [x] Allow user to choose how many threads will be used for downloading.
 
 ### TO-DO
 -----
-- [ ] Download your favourite 320kbps YoutTube audios from your playlists in .mp3 codec
+- [ ] Download your favourite 320kbps YoutTube audios from your playlists in .mp3 codec on Windows/macOS/Linux platforms.
 - [ ] Complete CLI support.
 - [ ] Complete CLI document.
 - [ ] Complete user-friendly GUI document.
