@@ -36,7 +36,10 @@
 
 ### Screenshots
 -----
-![YouTube Download Center v1.1](https://i.imgur.com/4Z9Q0PW.png) 
+#### [CURRENT] YouTube Download Center v1.2.0
+![[CURRENT] YouTube Download Center v1.2.0](https://i.imgur.com/81teK9d.png)
+#### [LEGACY] YouTube Download Center v1.1.0
+![[LEGACY] YouTube Download Center v1.1.0](https://i.imgur.com/4Z9Q0PW.png)
 
 ### BUG Report
 -----
