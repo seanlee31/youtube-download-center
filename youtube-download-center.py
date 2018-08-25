@@ -429,8 +429,11 @@ class YTDC_GUI():
         pl_entries = self.text_pl_urls.get("1.0", 'end-1c')  ## 'end-1c' to remove 1 character, \n.
 
         if pl_entries == "":
-            print("[ERROR] Please Enter At Least One Entry. \n")
-            print("[ERROR] Now Exiting ... \n")
+            print("[ERROR] Please Enter At Least One Entry! \n")
+            for i in range(5, 0, -1):
+                print("[MAIN] Exiting In {} Seconds ... \n".format(str(i)))
+                time.sleep(1)
+
             exit()
 
         pl_entries = pl_entries.splitlines()
