@@ -461,7 +461,8 @@ class YTDC_GUI():
         # print("[MAIN] All Threads Had Successfully Finished Downloading Quests! \n")
 
     def run(self):
-        # def create_dynamic_entries():
+        # dynamic_entries = {}
+        # def create_dynamic_entries(dynamic_entries):
         #     num_entries = int(cbox_number_options.get())
         #     num_entries = tuple([str(i) for i in range(1, num_entries + 1)])
 
@@ -470,7 +471,6 @@ class YTDC_GUI():
         #     path_label = Label(self.root, text="PATH", font='Helvetica 10 bold')
         #     path_label.grid(row=1, column=6, columnspan=1)
 
-        #     entries = {}
         #     i = 2
         #     for number in num_entries:
         #         url_entry = Entry(self.root)
@@ -479,12 +479,16 @@ class YTDC_GUI():
         #         path_entry = Entry(self.root)
         #         path_entry.grid(row=i, column=6, columnspan=2)
 
-        #         entry_label = Label(self.root, text=number, font='Helvetica 10 bold')
+        #         entry_label = Label(self.root, text="Playlist {}: ".format(number), font='Helvetica 10 bold')
         #         entry_label.grid(row=i, column=3, columnspan=1)
 
-        #         entries[number] = [url_entry, path_entry]
+        #         dynamic_entries[number] = [url_entry, path_entry]
         #         i += 1
-        #     return entries
+        
+        # def get_entry_values(dynamic_entries):
+        #     for key, value in dynamic_entries.items():
+        #         print(value[0].get())
+        #         print(value[1].get())
 
         self.root.title("YouTube Download Center v{}".format(self._version))
         self.label_pl_urls.grid(row=0, column=0, columnspan=2, pady=(10, 10))
@@ -526,8 +530,11 @@ class YTDC_GUI():
         # cbox_number_options.grid(row=11, column=1, columnspan=1)
         # cbox_number_options.current(4)
         # ## Define Dynamic Entries Button
-        # create_entries_button = Button(self.root, text="CREATE EMPTY ENTRIES", command=create_dynamic_entries, width=50, font='Helvetica 8 bold', cursor="hand2")
+        # create_entries_button = Button(self.root, text="CREATE EMPTY ENTRIES", command=lambda: create_dynamic_entries(dynamic_entries), width=50, font='Helvetica 8 bold', cursor="hand2")
         # create_entries_button.grid(row=12, column=0, columnspan=2)
+        # ## Define Get Entry Values Button
+        # get_entry_values_button = Button(self.root, text="Get Entries Values", command=lambda: get_entry_values(dynamic_entries), width=50, font='Helvetica 8 bold', cursor="hand2")
+        # get_entry_values_button.grid(row=13, column=0, columnspan=2)
 
         ## Start GUI
         self.root.mainloop()
