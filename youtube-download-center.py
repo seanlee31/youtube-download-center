@@ -312,36 +312,6 @@ class YTDC_GUI():
     def __init__(self, current_version):
         self._version = current_version
         self.root = Tk()
-        self.label_pl_urls = Label(self.root, text='Input YouTube PlayLists URLs: ', font='Helvetica 10 bold')
-        self.text_pl_urls = ScrolledText(self.root)
-        self.label_mode = Label(self.root, text='Select Mode (AUDIO/VIDEO): ', font='Helvetica 10 bold')
-
-        mode_options = ("AUDIO", "VIDEO")
-        self.cbox_mode = ttk.Combobox(self.root, justify='center',values=mode_options, width=40, font='Helvetica 8 bold')
-        self.label_num_threads = Label(self.root, text='Select # of Thread Using: ', font='Helvetica 10 bold')
-
-        thread_options = tuple([str(i) for i in range(1, 10+1)])
-        self.cbox_thread = ttk.Combobox(self.root, justify='center', values=thread_options, width=40, font='Helvetica 8 bold')
-
-        self.label_resolution = Label(self.root, text='Select Resolution (If VIDEO Mode): ', font='Helvetica 10 bold')
-
-        resolution_options = ('1080P', '720P')
-        self.cbox_resolution = ttk.Combobox(self.root, justify='center', values=resolution_options, width=40, font='Helvetica 8 bold')
-
-        self.label_warning = Label(self.root, text='You Will Be Able To Cancel The Downloading Process By Clicking "EXIT" Button.', font='Helvetica 10 bold', fg="red")
-
-        ## Define DOWNLOAD Button
-        self.download_button = Button(self.root, text="START DOWNLOAD", command=self.download, width=50, font='Helvetica 8 bold', cursor="hand2")
-        
-        ## Define EXIT Button
-        self.exit_button = Button(self.root, text="EXIT", width=50, command=self.root.destroy, font='Helvetica 8 bold', cursor="hand2")
-
-        ## Author Disclaimer
-        self.label_author = Label(self.root, text='Developed By Sean Lee \u00A9 2018', font='Helvetica 8 bold')
-
-        ## Github Links
-        self.label_github = Label(self.root, text='[Github] https://github.com/seanlee31/youtube-download-center', font='Helvetica 8 bold', fg="blue", cursor="hand2")
-        self.label_bug_report = Label(self.root, text='[BUG Report] https://github.com/seanlee31/youtube-download-center/issues', font='Helvetica 8 bold', fg="blue", cursor="hand2")
 
     def get_yt_urls_and_paths(self, pl_urls_and_paths):
         yt_urls = list()
@@ -409,24 +379,12 @@ class YTDC_GUI():
         # for yt_downloader in yt_downloaders:
         #     yt_downloader.join()
 
-    def button_monitor(self):
-        while True:
-            if threading.activeCount() >= 2:
-                ## Disable buttons
-                self.download_button['state'] = 'disabled'
-                self.exit_button['state'] = 'disabled'
-                time.sleep(5)
-            else:           
-                ## Enable buttons
-                self.download_button['state'] = 'normal'
-                self.exit_button['state'] = 'normal'
-
-    def download(self):
+    def download(self, download_button, text_pl_urls, cbox_mode, cbox_thread, cbox_resolution):
         ## Disable buttons
-        self.download_button['state'] = 'disabled'
+        download_button['state'] = 'disabled'
 
         p_url_and_path = r"(.*):(https?:.*)"
-        pl_entries = self.text_pl_urls.get("1.0", 'end-1c')  ## 'end-1c' to remove 1 character, \n.
+        pl_entries = text_pl_urls.get("1.0", 'end-1c')  ## 'end-1c' to remove 1 character, \n.
 
         if pl_entries == "":
             print("[ERROR] Please Enter At Least One Entry! \n")
@@ -438,9 +396,9 @@ class YTDC_GUI():
 
         pl_entries = pl_entries.splitlines()
 
-        mode = self.cbox_mode.get()
-        num_threads = int(self.cbox_thread.get())
-        resolution = self.cbox_resolution.get()
+        mode = cbox_mode.get()
+        num_threads = int(cbox_thread.get())
+        resolution = cbox_resolution.get()
 
         path_lst = list()
         pl_lst = list()
@@ -457,33 +415,28 @@ class YTDC_GUI():
         yt_urls, pl_paths = self.get_yt_urls_and_paths(pl_mappings)
 
         self.download_from_mapping_multithreaded(urls=yt_urls, paths=pl_paths, mode=mode, num_threads=num_threads, show_progress=False, resolution=resolution)
-        
-        # buttonMonitorThread = threading.Thread(target=button_monitor, name="buttonMonitor")
-        # buttonMonitorThread.daemon = True
-        # buttonMonitorThread.run()
-        # print("[MAIN] All Threads Had Successfully Finished Downloading Quests! \n")
 
     def run(self):
         # dynamic_entries = {}
-        # def create_dynamic_entries(dynamic_entries):
+        # def create_dynamic_entries(dynamic_entries, frame):
         #     num_entries = int(cbox_number_options.get())
         #     num_entries = tuple([str(i) for i in range(1, num_entries + 1)])
 
-        #     url_label = Label(self.root, text="URL", font='Helvetica 10 bold')
-        #     url_label.grid(row=1, column=4, columnspan=1)
-        #     path_label = Label(self.root, text="PATH", font='Helvetica 10 bold')
-        #     path_label.grid(row=1, column=6, columnspan=1)
+        #     url_label = Label(frame, text="URL", font='Helvetica 10 bold')
+        #     url_label.grid(row=1, column=1, columnspan=2)
+        #     path_label = Label(frame, text="PATH", font='Helvetica 10 bold')
+        #     path_label.grid(row=1, column=3, columnspan=2)
 
         #     i = 2
         #     for number in num_entries:
-        #         url_entry = Entry(self.root)
-        #         url_entry.grid(row=i, column=4, columnspan=2)
+        #         entry_label = Label(frame, text="Playlist {}: ".format(number), font='Helvetica 10 bold')
+        #         entry_label.grid(row=i, column=0, columnspan=1)
 
-        #         path_entry = Entry(self.root)
-        #         path_entry.grid(row=i, column=6, columnspan=2)
+        #         url_entry = Entry(frame)
+        #         url_entry.grid(row=i, column=1, columnspan=2)
 
-        #         entry_label = Label(self.root, text="Playlist {}: ".format(number), font='Helvetica 10 bold')
-        #         entry_label.grid(row=i, column=3, columnspan=1)
+        #         path_entry = Entry(frame)
+        #         path_entry.grid(row=i, column=3, columnspan=2)
 
         #         dynamic_entries[number] = [url_entry, path_entry]
         #         i += 1
@@ -493,57 +446,96 @@ class YTDC_GUI():
         #         print(value[0].get())
         #         print(value[1].get())
 
-        self.root.title("YouTube Download Center v{}".format(self._version))
-        self.label_pl_urls.grid(row=0, column=0, columnspan=2, pady=(10, 10))
+        ## Setup TKinter Objects
+        bulk_playlists_frame = Frame(self.root)
+        bulk_playlists_frame.grid(row=1, column=0, columnspan=2)       
 
-        self.text_pl_urls.grid(row=1, column=0, columnspan=2)
+        label_pl_urls = Label(bulk_playlists_frame, text='Input YouTube PlayLists URLs: ', font='Helvetica 10 bold')
+        text_pl_urls = ScrolledText(bulk_playlists_frame)
+        label_mode = Label(bulk_playlists_frame, text='Select Mode (AUDIO/VIDEO): ', font='Helvetica 10 bold')
 
-        self.label_mode.grid(row=2, column=0)
+        mode_options = ("AUDIO", "VIDEO")
+        cbox_mode = ttk.Combobox(bulk_playlists_frame, justify='center',values=mode_options, width=40, font='Helvetica 8 bold')
+        label_num_threads = Label(bulk_playlists_frame, text='Select # of Thread Using: ', font='Helvetica 10 bold')
+
+        thread_options = tuple([str(i) for i in range(1, 10+1)])
+        cbox_thread = ttk.Combobox(bulk_playlists_frame, justify='center', values=thread_options, width=40, font='Helvetica 8 bold')
+
+        label_resolution = Label(bulk_playlists_frame, text='Select Resolution (If VIDEO Mode): ', font='Helvetica 10 bold')
+
+        resolution_options = ('1080P', '720P')
+        cbox_resolution = ttk.Combobox(bulk_playlists_frame, justify='center', values=resolution_options, width=40, font='Helvetica 8 bold')
+
+        label_warning = Label(bulk_playlists_frame, text='You Will Be Able To Cancel The Downloading Process By Clicking "EXIT" Button.', font='Helvetica 10 bold', fg="red")
+
+        ### Define DOWNLOAD Button
+        download_button = Button(bulk_playlists_frame, text="START DOWNLOAD", command=lambda: self.download(download_button, text_pl_urls, cbox_mode, cbox_thread, cbox_resolution), width=50, font='Helvetica 8 bold', cursor="hand2")
         
-        self.cbox_mode.current(1)
-        self.cbox_mode.grid(row=2, column=1)
+        ### Define EXIT Button
+        exit_button = Button(bulk_playlists_frame, text="EXIT", width=50, command=self.root.destroy, font='Helvetica 8 bold', cursor="hand2")
 
-        self.label_num_threads.grid(row=3, column=0)
+        ### Author Disclaimer
+        label_author = Label(bulk_playlists_frame, text='Developed By Sean Lee \u00A9 2018', font='Helvetica 8 bold')
 
-        self.cbox_thread.current(4)
-        self.cbox_thread.grid(row=3, column=1)
+        ### Github Links
+        label_github = Label(bulk_playlists_frame, text='[Github] https://github.com/seanlee31/youtube-download-center', font='Helvetica 8 bold', fg="blue", cursor="hand2")
+        label_bug_report = Label(bulk_playlists_frame, text='[BUG Report] https://github.com/seanlee31/youtube-download-center/issues', font='Helvetica 8 bold', fg="blue", cursor="hand2")
 
-        self.label_resolution.grid(row=4, column=0)
+        ## Configure TKinter Objects
+        self.root.title("YouTube Download Center v{}".format(self._version))
+        label_pl_urls.grid(row=0, column=0, columnspan=2, pady=(10, 10))
 
-        self.cbox_resolution.current(0)
-        self.cbox_resolution.grid(row=4, column=1)
+        text_pl_urls.grid(row=1, column=0, columnspan=2)
 
-        self.label_warning.grid(row=5, column=0, columnspan=2, pady=(10, 10))
+        label_mode.grid(row=2, column=0)
+        
+        cbox_mode.current(1)
+        cbox_mode.grid(row=2, column=1)
 
-        self.download_button.grid(row=6, column=0, columnspan=2)
+        label_num_threads.grid(row=3, column=0)
 
-        self.exit_button.grid(row=7, column=0, columnspan=2)
+        cbox_thread.current(4)
+        cbox_thread.grid(row=3, column=1)
 
-        self.label_author.grid(row=8, column=0, columnspan=2, pady=(10, 0))
+        label_resolution.grid(row=4, column=0)
 
-        self.label_github.grid(row=9, column=0, columnspan=2)
-        self.label_bug_report.grid(row=10, column=0, columnspan=2)
+        cbox_resolution.current(0)
+        cbox_resolution.grid(row=4, column=1)
+
+        label_warning.grid(row=5, column=0, columnspan=2, pady=(10, 10))
+
+        download_button.grid(row=6, column=0, columnspan=2)
+
+        exit_button.grid(row=7, column=0, columnspan=2)
+
+        label_author.grid(row=8, column=0, columnspan=2, pady=(10, 0))
+
+        label_github.grid(row=9, column=0, columnspan=2)
+        label_bug_report.grid(row=10, column=0, columnspan=2)
         
         # ## [Work IPR] Dynamic Entries
-        # label_number_entry = Label(self.root, text="Input # of Entries", font='Helvetica 10 bold')
-        # label_number_entry.grid(row=11, column=0, columnspan=1)
+        # dynamic_entries_frame = Frame(self.root)
+        # dynamic_entries_frame.grid(row=1, column=2, columnspan=2)
 
-        # number_options = tuple([str(i) for i in range(1, 10+1)])
-        # cbox_number_options = ttk.Combobox(self.root, justify='center', values=number_options, width=40, font='Helvetica 8 bold')
-        # cbox_number_options.grid(row=11, column=1, columnspan=1)
+        # label_number_entry = Label(dynamic_entries_frame, text="Input # of Entries: ", font='Helvetica 10 bold')
+        # label_number_entry.grid(row=22, column=0, columnspan=2)  ## Maximum 18 Entries
+
+        # number_options = tuple([str(i) for i in range(1, 20+1)])
+        # cbox_number_options = ttk.Combobox(dynamic_entries_frame, justify='center', values=number_options, width=40, font='Helvetica 8 bold')
+        # cbox_number_options.grid(row=22, column=2, columnspan=2)
         # cbox_number_options.current(4)
-        # ## Define Dynamic Entries Button
-        # create_entries_button = Button(self.root, text="CREATE EMPTY ENTRIES", command=lambda: create_dynamic_entries(dynamic_entries), width=50, font='Helvetica 8 bold', cursor="hand2")
-        # create_entries_button.grid(row=12, column=0, columnspan=2)
-        # ## Define Get Entry Values Button
-        # get_entry_values_button = Button(self.root, text="Get Entries Values", command=lambda: get_entry_values(dynamic_entries), width=50, font='Helvetica 8 bold', cursor="hand2")
-        # get_entry_values_button.grid(row=13, column=0, columnspan=2)
+        # ### Define Dynamic Entries Button
+        # create_entries_button = Button(dynamic_entries_frame, text="CREATE EMPTY ENTRIES", command=lambda: create_dynamic_entries(dynamic_entries, dynamic_entries_frame), width=50, font='Helvetica 8 bold', cursor="hand2")
+        # create_entries_button.grid(row=23, column=1, columnspan=2)
+        # ### Define Get Entry Values Button
+        # get_entry_values_button = Button(dynamic_entries_frame, text="Get Entries Values", command=lambda: get_entry_values(dynamic_entries), width=50, font='Helvetica 8 bold', cursor="hand2")
+        # get_entry_values_button.grid(row=24, column=1, columnspan=2)
 
         ## Start GUI
         self.root.mainloop()
 
 
 if __name__ == '__main__':
-    current_version = "1.2.1"
+    current_version = "1.2.2"
     YTDC_GUI = YTDC_GUI(current_version=current_version)
     YTDC_GUI.run()
