@@ -374,7 +374,7 @@ class YTDC_GUI():
             downloader.daemon = True
             downloader.start()
             # yt_downloaders.append(yt_downloader)
-            time.sleep(1)
+            time.sleep(3)
 
         # for yt_downloader in yt_downloaders:
         #     yt_downloader.join()
