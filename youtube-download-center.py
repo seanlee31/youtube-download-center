@@ -337,7 +337,7 @@ class YTDC_GUI():
         self.exit_button = Button(self.root, text="EXIT", width=50, command=self.root.destroy, font='Helvetica 8 bold', cursor="hand2")
 
         ## Author Disclaimer
-        self.label_author = Label(self.root, text='Developed By Sean Lee © 2018', font='Helvetica 8 bold')
+        self.label_author = Label(self.root, text='Developed By Sean Lee \u00A9 2018', font='Helvetica 8 bold')
 
         ## Github Links
         self.label_github = Label(self.root, text='[Github] https://github.com/seanlee31/youtube-download-center', font='Helvetica 8 bold', fg="blue", cursor="hand2")
@@ -427,6 +427,12 @@ class YTDC_GUI():
 
         p_url_and_path = r"(.*):(https?:.*)"
         pl_entries = self.text_pl_urls.get("1.0", 'end-1c')  ## 'end-1c' to remove 1 character, \n.
+
+        if pl_entries == "":
+            print("[ERROR] Please Enter At Least One Entry. \n")
+            print("[ERROR] Now Exiting ... \n")
+            exit()
+
         pl_entries = pl_entries.splitlines()
 
         mode = self.cbox_mode.get()
@@ -455,6 +461,31 @@ class YTDC_GUI():
         # print("[MAIN] All Threads Had Successfully Finished Downloading Quests! \n")
 
     def run(self):
+        # def create_dynamic_entries():
+        #     num_entries = int(cbox_number_options.get())
+        #     num_entries = tuple([str(i) for i in range(1, num_entries + 1)])
+
+        #     url_label = Label(self.root, text="URL", font='Helvetica 10 bold')
+        #     url_label.grid(row=1, column=4, columnspan=1)
+        #     path_label = Label(self.root, text="PATH", font='Helvetica 10 bold')
+        #     path_label.grid(row=1, column=6, columnspan=1)
+
+        #     entries = {}
+        #     i = 2
+        #     for number in num_entries:
+        #         url_entry = Entry(self.root)
+        #         url_entry.grid(row=i, column=4, columnspan=2)
+
+        #         path_entry = Entry(self.root)
+        #         path_entry.grid(row=i, column=6, columnspan=2)
+
+        #         entry_label = Label(self.root, text=number, font='Helvetica 10 bold')
+        #         entry_label.grid(row=i, column=3, columnspan=1)
+
+        #         entries[number] = [url_entry, path_entry]
+        #         i += 1
+        #     return entries
+
         self.root.title("YouTube Download Center v{}".format(self._version))
         self.label_pl_urls.grid(row=0, column=0, columnspan=2, pady=(10, 10))
 
@@ -485,6 +516,18 @@ class YTDC_GUI():
 
         self.label_github.grid(row=9, column=0, columnspan=2)
         self.label_bug_report.grid(row=10, column=0, columnspan=2)
+        
+        # ## [Work IPR] Dynamic Entries
+        # label_number_entry = Label(self.root, text="Input # of Entries", font='Helvetica 10 bold')
+        # label_number_entry.grid(row=11, column=0, columnspan=1)
+
+        # number_options = tuple([str(i) for i in range(1, 10+1)])
+        # cbox_number_options = ttk.Combobox(self.root, justify='center', values=number_options, width=40, font='Helvetica 8 bold')
+        # cbox_number_options.grid(row=11, column=1, columnspan=1)
+        # cbox_number_options.current(4)
+        # ## Define Dynamic Entries Button
+        # create_entries_button = Button(self.root, text="CREATE EMPTY ENTRIES", command=create_dynamic_entries, width=50, font='Helvetica 8 bold', cursor="hand2")
+        # create_entries_button.grid(row=12, column=0, columnspan=2)
 
         ## Start GUI
         self.root.mainloop()
