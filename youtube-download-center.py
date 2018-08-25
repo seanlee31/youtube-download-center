@@ -222,7 +222,7 @@ class videoDownloaderThread(genericDownloaderThread):
         ### Download Video Part
         video = yt.streams.get_by_itag(video_itag)
         codec_type = "VIDEO"
-        title, file_ext = self.get_title_and_file_ext(video.default_filename)
+        title, video_file_ext = self.get_title_and_file_ext(video.default_filename)
         filename = title + codec_type
         file_names.append(filename)
         print("[HELPER - {} - {}/{}] Start Downloading YouTube 1080P - Video: {} ! \n".format(self.name, self._count, self._init_quantity, yt.watch_url))
@@ -234,7 +234,7 @@ class videoDownloaderThread(genericDownloaderThread):
         ### Download Audio Part
         audio = yt.streams.get_by_itag(audio_itag)
         codec_type = "AUDIO"
-        title, file_ext = self.get_title_and_file_ext(audio.default_filename)
+        title, audio_file_ext = self.get_title_and_file_ext(audio.default_filename)
         filename = title + codec_type
         file_names.append(filename)
         print("[HELPER - {} - {}/{}] Start Downloading YouTube 1080P - Audio: {} ! \n".format(self.name, self._count, self._init_quantity, yt.watch_url))
@@ -246,7 +246,7 @@ class videoDownloaderThread(genericDownloaderThread):
         ## Start Merging Audio & Video
         print("[HELPER - {} - {}/{}] Start Merging Audio & Video Using FFMPEG: {} ! \n".format(self.name, self._count, self._init_quantity, title))
         os.chdir(video_path)
-        input_files = ['{}.{}'.format(file_names[0], file_ext), '{}.{}'.format(file_names[1], file_ext)]
+        input_files = ['{}.{}'.format(file_names[0], video_file_ext), '{}.{}'.format(file_names[1], audio_file_ext)]
         ffmpeg_path = self.get_ffmpeg_path()
         print(ffmpeg_path)
         try:
