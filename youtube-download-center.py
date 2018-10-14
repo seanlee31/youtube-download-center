@@ -99,6 +99,10 @@ class videoDownloaderThread(genericDownloaderThread):
                 print("[Error (RegexMatchError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
                 continue
+            except exceptions.VideoUnavailable:
+                print("[ERROR (VideoUnavailable) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
+                self._count += 1
+                continue
             except OSError:
                 print("[Error (OSError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
@@ -131,10 +135,14 @@ class videoDownloaderThread(genericDownloaderThread):
                 print("[ERROR (RegexMatchError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
                 self._count += 1
                 continue
-            # except OSError:
-            #     print("[ERROR (OSError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
-            #     self._count += 1
-            #     continue
+            except exceptions.VideoUnavailable:
+                print("[ERROR (VideoUnavailable) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
+                self._count += 1
+                continue
+            except OSError:
+                print("[ERROR (OSError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n".format(self.name, self._count, self._init_quantity, yt_url))
+                self._count += 1
+                continue
 
         print("[MAIN - {}] The Thread Has Finished Downloading All YouTube Videos Assigned!\nExiting Thread ... \n".format(self.name))
 
@@ -250,10 +258,11 @@ class videoDownloaderThread(genericDownloaderThread):
         ffmpeg_path = self.get_ffmpeg_path()
         print(ffmpeg_path)
         try:
+            ## Merging Audio & Video into H.264 Video with AAC Audio Formatt in MKV Container.
             subprocess.call([ffmpeg_path, 
             '-i', input_files[0], 
             '-i', input_files[1], 
-            '-c:v', 'copy',
+            '-c:v', 'libx264',
             '-c:a', 'aac', 
             '-ac', '2',
             '-ar', '48000', 
@@ -344,6 +353,7 @@ class YTDC_GUI():
         if num_mappings < num_threads:
             num_videos_per_thread = 1
 
+        ### > TO BE UPDATED: NEW MAPPING ASSIGNMENT ALGORITHM TBD ###
         mappings_by_threads = list(self.list_chunkify(mappings, num_videos_per_thread))
 
         if num_videos_per_thread >= 1 and num_videos_remainder > 0:
@@ -359,6 +369,7 @@ class YTDC_GUI():
                 mappings_by_threads = mappings_by_threads[:-1]
                 num_mappings_per_thread = len(mappings_by_threads)
                 diff = num_mappings_per_thread - num_threads
+        ### TO BE UPDATED: NEW MAPPING ASSIGNMENT ALGORITHM TBD < ###
         
         # yt_downloaders = list()
         ## Start DownloaderThread Workers.
@@ -371,7 +382,7 @@ class YTDC_GUI():
             if mode == "VIDEO":
                 downloader = videoDownloaderThread(yt_video_queue=mappings, init_num_videos=num_mappings, show_progress=show_progress, resolution=resolution)
 
-            downloader.daemon = True
+            downloader.daemon = True  ## so the child thread will be terminated when the parent thread is exitted.
             downloader.start()
             # yt_downloaders.append(yt_downloader)
             time.sleep(3)
