@@ -223,40 +223,50 @@ class videoDownloaderThread(genericDownloaderThread):
         available_combinations = self.get_available_1080p_codecs(yt)
         ## Select the first/best quality combination.
         file_names = list()
-        video_itag = available_combinations[0][0]
-        audio_itag = available_combinations[0][1]
+        try:
+            video_itag = available_combinations[0][0]
+            audio_itag = available_combinations[0][1]
 
-        ## Start Downloads
-        ### Download Video Part
-        video = yt.streams.get_by_itag(video_itag)
-        codec_type = "VIDEO"
-        title, video_file_ext = self.get_title_and_file_ext(video.default_filename)
-        filename = title + codec_type
-        file_names.append(filename)
-        print("[HELPER - {} - {}/{}] Start Downloading YouTube 1080P - Video: {} ! \n".format(self.name, self._count, self._init_quantity, yt.watch_url))
-        video.download(output_path=video_path, filename=filename)
+            ## Start Downloads
+            ### Download Video Part
+            video = yt.streams.get_by_itag(video_itag)
+            codec_type = "VIDEO"
+            title, video_file_ext = self.get_title_and_file_ext(video.default_filename)
+            filename = title + codec_type
+            file_names.append(filename)
+            print("[HELPER - {} - {}/{}] Start Downloading YouTube 1080P - Video: {} ! \n".format(self.name, self._count, self._init_quantity, yt.watch_url))
+            video.download(output_path=video_path, filename=filename)
 
-        print("[HELPER - {} - {}/{}] Finished Downloading YouTube 1080P - Video: {} ! ".format(self.name, self._count, self._init_quantity, filename))
-        print("[HELPER - {} - {}/{}] Saved Directory: {}. \n".format(self.name, self._count, self._init_quantity, video_path))
+            print("[HELPER - {} - {}/{}] Finished Downloading YouTube 1080P - Video: {} ! ".format(self.name, self._count, self._init_quantity, filename))
+            print("[HELPER - {} - {}/{}] Saved Directory: {}. \n".format(self.name, self._count, self._init_quantity, video_path))
 
-        ### Download Audio Part
-        audio = yt.streams.get_by_itag(audio_itag)
-        codec_type = "AUDIO"
-        title, audio_file_ext = self.get_title_and_file_ext(audio.default_filename)
-        filename = title + codec_type
-        file_names.append(filename)
-        print("[HELPER - {} - {}/{}] Start Downloading YouTube 1080P - Audio: {} ! \n".format(self.name, self._count, self._init_quantity, yt.watch_url))
-        audio.download(output_path=video_path, filename=filename)
+            ### Download Audio Part
+            audio = yt.streams.get_by_itag(audio_itag)
+            codec_type = "AUDIO"
+            title, audio_file_ext = self.get_title_and_file_ext(audio.default_filename)
+            filename = title + codec_type
+            file_names.append(filename)
+            print("[HELPER - {} - {}/{}] Start Downloading YouTube 1080P - Audio: {} ! \n".format(self.name, self._count, self._init_quantity, yt.watch_url))
+            audio.download(output_path=video_path, filename=filename)
 
-        print("[HELPER - {} - {}/{}] Finished Downloading YouTube 1080P - Audio: {} ! ".format(self.name, self._count, self._init_quantity, filename))
-        print("[HELPER - {} - {}/{}] Saved Directory: {}. \n".format(self.name, self._count, self._init_quantity, video_path))
+            print("[HELPER - {} - {}/{}] Finished Downloading YouTube 1080P - Audio: {} ! ".format(self.name, self._count, self._init_quantity, filename))
+            print("[HELPER - {} - {}/{}] Saved Directory: {}. \n".format(self.name, self._count, self._init_quantity, video_path))
 
-        ## Start Merging Audio & Video
-        print("[HELPER - {} - {}/{}] Start Merging Audio & Video Using FFMPEG: {} ! \n".format(self.name, self._count, self._init_quantity, title))
-        os.chdir(video_path)
-        input_files = ['{}.{}'.format(file_names[0], video_file_ext), '{}.{}'.format(file_names[1], audio_file_ext)]
-        ffmpeg_path = self.get_ffmpeg_path()
-        print(ffmpeg_path)
+            ## Start Merging Audio & Video
+            print("[HELPER - {} - {}/{}] Start Merging Audio & Video Using FFMPEG: {} ! \n".format(self.name, self._count, self._init_quantity, title))
+            os.chdir(video_path)
+            input_files = ['{}.{}'.format(file_names[0], video_file_ext), '{}.{}'.format(file_names[1], audio_file_ext)]
+            ffmpeg_path = self.get_ffmpeg_path()
+            print(ffmpeg_path)
+
+            self.ffmpeg_merge_video_and_audio(ffmpeg_path, input_files, title)
+
+            print("[HELPER - {} - {}/{}] Finished Downloading and Merging Audio & Video for 1080p YouTube Video: {}. \n".format(self.name, self._count, self._init_quantity, title))
+        
+        except IndexError as e:
+            print("[ERROR (IndexError) - {} - {}/{}] YouTube Video {} Had a Problem Processing And Was Skipped!\n {} \n".format(self.name, self._count, self._init_quantity, yt.watch_url, e))
+
+    def ffmpeg_merge_video_and_audio(self, ffmpeg_path, input_files, title):
         try:
             ## Merging Audio & Video into H.264 Video with AAC Audio Formatt in MKV Container.
             subprocess.call([ffmpeg_path, 
@@ -278,8 +288,6 @@ class videoDownloaderThread(genericDownloaderThread):
         except FileNotFoundError:
             print("[ERROR (FileNotFoundError) - {} - {}/{}] FFMPEG Library Is Missing. \n".format(self.name, self._count, self._init_quantity))
             pass
-
-        print("[HELPER - {} - {}/{}] Finished Downloading and Merging Audio & Video for 1080p YouTube Video: {}. \n".format(self.name, self._count, self._init_quantity, title))
 
 class audioDownloaderThread(genericDownloaderThread):
     ## Concrete Product (AUDIO)
@@ -370,7 +378,7 @@ class YTDC_GUI():
                 num_mappings_per_thread = len(mappings_by_threads)
                 diff = num_mappings_per_thread - num_threads
         ### TO BE UPDATED: NEW MAPPING ASSIGNMENT ALGORITHM TBD < ###
-        
+
         # yt_downloaders = list()
         ## Start DownloaderThread Workers.
         for mappings in mappings_by_threads:
