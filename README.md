@@ -1,6 +1,6 @@
 # YouTube Download Center
 
-## A Python-based YouTube Video &amp; Audio Downloader
+## A Python-Based YouTube Video &amp; Audio GUI Downloader
 
 ### CURRENT VERSION
 -----
